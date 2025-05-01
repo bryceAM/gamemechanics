@@ -13,10 +13,11 @@ function print(content) {
     /**
      * Print content from an action
      */
+    if (content == null || content == undefined) content = '';
 
     const terminal = document.getElementById('terminal');
     const oldContent = terminal.innerHTML;
-    const RETURN = '<br>';
+    const RETURN = `<br>`;
     const newContent = content + RETURN;
 
     terminal.innerHTML = oldContent + newContent;
