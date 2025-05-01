@@ -1,63 +1,64 @@
-import * as commands from './utils/commands.js'
+import { commands } from './utils/commands.js'
 import { ROOMS } from './world/rooms.js'
 
 // Initialize player character object
-const character = {
-    location: {
+class Character {
+    constructor(commands) {
+        this.commands = commands;
+    };
+    appearance = {
+        'complexion': null,
+        'eye color': null,
+        'hair length': null,
+        'hair style': null,
+        'hair color': null
+    };
+    race = {};
+    location = {
         x: 0,
         y: 0,
         z: 0
-    },
-    commands: commands,
-    room: {}
+    };
+    look(room) {
+        if (room == null || room == undefined || Object.keys(room).length <= 0) {
+            commands.print("You don't see anything over there!");
+            commands.print();
+            return
+        }
+
+        const title = room.title;
+        const description = room.description;
+    
+        commands.print(title);
+        commands.print(description);
+        commands.print();
+    };
+    room = {};
+    move(room) {
+        if (room == null || room == undefined) {
+            commands.print("There's no way to get there!");
+            return
+        }
+        this.room = room;
+        this.look(this.room);
+    };
+    get description() {
+        const a = this.appearance;
+        return `You have a ${a['complexion']} complexion, ${a['eye color']} eyes, and ${a['hair length']} ${a['hair style']} ${a['hair color']} hair.`;
+    };
 }
 
-function getRoom(xyz) {
-    return ROOMS[xyz]
-}
+const character = new Character(commands);
 
 (function initialize() {
     /**
-     * Initializes the game with the splash screen and handles tidying
-     * up the splash screen and loading you into the world upon any key
-     * press.
+     * Sets your character's location in the first room of the world - the womb - where
+     * character creation begins, and executes the room's character creation script.
      */
 
-
-    const button = document.querySelector('button');
-
     // Initialize
-    const xyz = `${character.location.x}${character.location.y}${character.location.z}`; // stringify the location
-    character.room = getRoom(xyz);
-    character.commands = character.room.commands;
-    character.commands.look(character.room);
-
-
-    button.addEventListener('click', (e) => {
-        character.commands.choose(character.room.params)
-        character.location.z += 1;
-        const xyz = `${character.location.x}${character.location.y}${character.location.z}`;
-
-        character.room = getRoom(xyz);
-        character.commands = character.room.commands;
-        character.commands.look(character.room)
-    });
-    // button.addEventListener('click', event);
-    // document.addEventListener('keydown', event)
-
-    
-
-    // Function declarations
-    // function event() {
-    //     clear();
-    //     print(listOptions(COMPLEXIONS));
-    //     print(listOptions(EYECOLORS));
-    //     print(listOptions(HAIRLENGTHS));
-    //     print(listOptions(HAIRSTYLES));
-    //     print(listOptions(HAIRCOLORS));
-        
-
-    //     button.removeEventListener('click', event);
-    //     document.removeEventListener('keydown', event);
-    // }
+    const xyz = `${character.location.x}${character.location.y}${character.location.z}`;
+    const room = ROOMS[xyz];
+    character.move(room);
+    character.room.script(character);
 })()
