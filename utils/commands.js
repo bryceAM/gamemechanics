@@ -8,14 +8,15 @@ function resetInput(input) {
     input.focus()
 }
 
-function makeChoice(featureSet) {
+function makeChoice(featureList) {
     const input = document.querySelector('input');
     const i = Number(input.value) - 1;
     
-    console.log(featureSet.options[i].selection) // test code
+    console.log(featureList) // test code
+    console.log(featureList[i].gene) // test code
     resetInput(input);
 
-    return featureSet.options[i].selection
+    return featureList[i].gene
 }
 
 const commands = {
