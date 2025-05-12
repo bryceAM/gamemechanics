@@ -1,295 +1,171 @@
-const COMPLEXIONS = {
-    category: 'complexion',
-    options: [
-        {
-            description: 'fair'
-        },
-        {
-            description: 'lily-white'
-        },
-        {
-            description: 'rosy'
-        },
-        {
-            description: 'pallid'
-        },
-        {
-            description: 'ruddy'
-        },
-        {
-            description: 'tanned'
-        },
-        {
-            description: 'white'
-        },
-        {
-            description: 'ivory'
-        },
-        {
-            description: 'alabaster'
-        },
-        {
-            description: 'pale'
-        },
-        {
-            description: 'ashen'
-        },
-        {
-            description: 'snow-white'
-        },
-        {
-            description: 'porcelain'
-        },
-        {
-            description: 'flushed'
-        },
-        {
-            description: 'blushing'
-        },
-        {
-            description: 'swarthy'
-        },
-        {
-            description: 'tawny'
-        },
-        {
-            description: 'bronzed'
-        },
-        {
-            description: 'leathery'
-        },
-        {
-            description: 'dun'
-        },
-        {
-            description: 'ebony'
-        },
-        {
-            description: 'freckled'
-        },
-        {
-            description: 'sable'
+class Humanoid {
+    constructor() {
+        this.dna = {
+            'race': [{gene: 'Humanoid'}],
+            'complexion': [
+                {gene: 'fair'},
+                {gene: 'healthy'},
+                {gene: 'white'},
+                {gene: 'wan'},
+                {gene: 'pasty'},
+                {gene: 'blanched'},
+                {gene: 'tanned'},
+                {gene: 'blushing'},
+                {gene: 'flushed'},
+                {gene: 'freckled'}
+            ],
+            'eye color': [
+                {gene: 'blue'},
+                {gene: 'brown'},
+                {gene: 'green'},
+                {gene: 'gray'},
+                {gene: 'white'},
+                {gene: 'multihued'}
+            ],
+            'hair length': [
+                {gene: 'bald'},
+                {gene: 'balding'},
+                {gene: 'short'},
+                {gene: 'medium-length'},
+                {gene: 'shoulder-length'},
+                {gene: 'long'},
+                {gene: 'ankle-length'}
+            ],
+            'hair style': [
+                {gene: 'straight'},
+                {gene: 'unkempt'},
+                {gene: 'shaggy'},
+                {gene: 'unruly'},
+                {gene: 'loose'},
+                {gene: 'fluffy'},
+                {gene: 'wispy'}
+            ],
+            'hair color': [
+                {gene: 'black'},
+                {gene: 'blue-black'},
+                {gene: 'jet-black'},
+                {gene: 'brown'},
+                {gene: 'light-brown'},
+                {gene: 'umber'},
+                {gene: 'dark-brown'},
+                {gene: 'auburn'},
+                {gene: 'chestnut'},
+                {gene: 'russet'},
+                {gene: 'brunette'},
+                {gene: 'white'},
+                {gene: 'gray'},
+                {gene: 'steel-gray'},
+                {gene: 'hoar-gray'}
+            ]
         }
-    ]
+    }
+    appearance = {
+        'complexion': null,
+        'eye color': null,
+        'hair length': null,
+        'hair style': null,
+        'hair color': null
+    };
+    move(room) {
+        if (room == null || room == undefined) {
+            commands.print("There's no way to get there!");
+            return
+        }
+        this.room = room;
+        this.look(this.room);
+    };
+    get description() {
+        const a = this.appearance;
+        return `You have a ${a['complexion']} complexion, ${a['eye color']} eyes, and ${a['hair length']} ${a['hair style']} ${a['hair color']} hair.`;
+    };
 }
 
-const EYECOLORS = {
-    category: 'eye color',
-    options: [
-        {
-            description: 'blue'
-        },
-        {
-            description: 'brown'
-        },
-        {
-            description: 'ale-brown'
-        },
-        {
-            description: 'golden'
-        },
-        {
-            description: 'silver'
-        },
-        {
-            description: 'multihued'
-        },
-        {
-            description: 'green'
-        },
-        {
-            description: 'forest-green'
-        },
-        {
-            description: 'crystal-blue'
-        }
-    ]
+class Human extends Humanoid {
+    constructor() {
+        super();
+        this.dna['race'] = [{gene: 'Human'}];
+        this.dna['complexion'].push(...[
+            {gene: 'lily-white'},
+            {gene: 'ivory'},
+            {gene: 'alabaster'},
+            {gene: 'ashen'},
+            {gene: 'pallid'},
+            {gene: 'pale'},
+            {gene: 'snow-white'},
+            {gene: 'porcelain'},
+            {gene: 'rosy'},
+            {gene: 'ruddy'},
+            {gene: 'swarthy'},
+            {gene: 'tawny'},
+            {gene: 'bronzed'},
+            {gene: 'leathery'},
+            {gene: 'dun'},
+            {gene: 'dusky'},
+            {gene: 'ebony'},
+            {gene: 'sable'},
+            {gene: 'sallow'},
+            {gene: 'coppery'}
+        ]);
+        this.dna['eye color'].push(...[
+            {gene: 'crystal blue'},
+            {gene: 'sky blue'},
+            {gene: 'pale blue'},
+            {gene: 'cobalt blue'},
+            {gene: 'hazel'},
+            {gene: 'dark-brown'},
+            {gene: 'ale-brown'},
+            {gene: 'milky-white'},
+            {gene: 'steely'},
+            {gene: 'steel-gray'},
+            {gene: 'dusky-gray'},
+            {gene: 'silver'},
+            {gene: 'emerald'},
+            {gene: 'viridian'},
+            {gene: 'purple'},
+            {gene: 'violet'},
+            {gene: 'lilac'},
+            {gene: 'wine-dark'}
+        ]);
+        this.dna['hair style'].push(...[
+            {gene: 'wavy'},
+            {gene: 'braided'},
+            {gene: 'plaited'},
+            {gene: 'cropped'},
+            {gene: 'tied-back'},
+            {gene: 'curly'},
+            {gene: 'frazzled'},
+            {gene: 'slicked-back'},
+            {gene: 'tonsured'},
+            {gene: 'bobbed'},
+            {gene: 'silky'},
+            {gene: 'downy'}
+        ]);
+        this.dna['hair color'].push(...[
+            {gene: 'amber'},
+            {gene: 'blonde'},
+            {gene: 'strawberry-blonde'},
+            {gene: 'honey-blonde'},
+            {gene: 'sandy-blonde'},
+            {gene: 'golden'},
+            {gene: 'midnight-black'},
+            {gene: 'chocolate-brown'},
+            {gene: 'ochre'},
+            {gene: 'ginger'},
+            {gene: 'platinum'},
+            {gene: 'red'},
+            {gene: 'titian'},
+            {gene: 'scarlet'},
+            {gene: 'fiery red'}
+        ]);
+    }
 }
 
-const HAIRLENGTHS = {
-    category: 'hair length',
-    options: [
-        {
-            description: 'bald'
-        },
-        {
-            description: 'balding'
-        },
-        {
-            description: 'short'
-        },
-        {
-            description: 'shoulder-length'
-        },
-        {
-            description: 'medium-length'
-        },
-        {
-            description: 'long'
-        },
-        {
-            description: 'ankle-length'
-        }
-    ]
-}
-
-const HAIRSTYLES = {
-    category: 'hair style',
-    options: [
-        {
-            description: 'tonsured'
-        },
-        {
-            description: 'wavy'
-        },
-        {
-            description: 'braided'
-        },
-        {
-            description: 'plaited'
-        },
-        {
-            description: 'tied-back'
-        },
-        {
-            description: 'slicked-back'
-        },
-        {
-            description: 'flowing'
-        },
-        {
-            description: 'tousled'
-        },
-        {
-            description: 'unkempt'
-        },
-        {
-            description: 'bobbed'
-        },
-
-
-        {
-            description: 'silky'
-        },
-        {
-            description: 'smooth'
-        },
-        {
-            description: 'straight'
-        },
-        {
-            description: 'tumbling'
-        },
-        {
-            description: 'cascading'
-        },
-        {
-            description: 'glossy'
-        },
-        {
-            description: 'loose'
-        },
-        {
-            description: 'lustrous'
-        }
-    ]
-}
-
-const HAIRCOLORS = {
-    category: 'hair color',
-    options: [
-        {
-            description: 'blonde'
-        },
-        {
-            description: 'russet'
-        },
-        {
-            description: 'honey-blonde'
-        },
-        {
-            description: 'strawberry-blonde'
-        },
-        {
-            description: 'golden'
-        },
-        {
-            description: 'platinum'
-        },
-        {
-            description: 'gray'
-        },
-        {
-            description: 'silver'
-        },
-        {
-            description: 'pale gray'
-        },
-        {
-            description: 'stormy'
-        },
-        {
-            description: 'steely-gray'
-        },
-        {
-            description: 'brown'
-        },
-        {
-            description: 'chestnut'
-        },
-        {
-            description: 'dark-brown'
-        },
-        {
-            description: 'brunette'
-        },
-        {
-            description: 'auburn'
-        },
-        {
-            description: 'black'
-        },
-        {
-            description: 'midnight-black'
-        },
-        {
-            description: 'jet-black'
-        },
-
-        {
-            description: 'red'
-        },
-        {
-            description: 'claret'
-        },
-        {
-            description: 'fiery-red'
-        },
-        {
-            description: 'titian'
-        },
-        {
-            description: 'scarlet'
-        },
-        {
-            description: 'crimson'
-        },
-        {
-            description: 'amber'
-        },
-        {
-            description: 'white'
-        },
-        {
-            description: 'ginger'
-        }
-    ]
-}
+const Races = [
+    {title: 'Human', race: Human}
+]
 
 export {
-    COMPLEXIONS,
-    EYECOLORS,
-    HAIRSTYLES,
-    HAIRLENGTHS,
-    HAIRCOLORS
+    Humanoid,
+    Human,
+    Races
 }
