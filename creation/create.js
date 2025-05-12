@@ -1,93 +1,104 @@
-import { commands } from '../utils/commands.js'
 import {
-    COMPLEXIONS,
-    EYECOLORS,
-    HAIRSTYLES,
-    HAIRLENGTHS,
-    HAIRCOLORS,
-    RACES
+    Races
 } from './lists.js'
 
-function listOptions(featureSet) {
-    const c = [];
-
-    for (let i = 0; i < featureSet.options.length; i++) {
-        c.push(`
-            ${i+1}.) ${featureSet.options[i].selection}
-            <br>
-        `);
-    }
-    
-    return `
-        Choose your ${featureSet.category}:
-        <br>
-        ${c.join('')}
-    `
-}
-
-function createCharacter(character) {
+function createCharacter(client, context, commands) {
     const button = document.querySelector('button');
     const input = document.querySelector('input');
-    let i = 0;
-    
-    // Races
-    const races = {
-        category: RACES.category,
-        options: RACES.options.map(option => {
-            return {
-                selection: option.selection.race
-            }
-        })
-    }
-    commands.print(listOptions(races));
-    button.addEventListener('click', race);
-    document.addEventListener('keydown', race);
-    function race(e) {
-        if (e.key == 'Enter' || e.type == 'click') {
-            character.race = commands.choose(RACES);
-            console.log('race:', character.race) // test code
-            i++
-            if (i >= races.length) {
-                button.removeEventListener('click', appearance);
-                document.removeEventListener('keydown', appearance);
-                i = 0;
 
-                return
-            }
-            commands.print(listOptions(features[i]));
-            commands.resetInput(input);
-        }
-    }
-
-    // Appearance choices
-    const features = [
-        COMPLEXIONS,
-        EYECOLORS,
-        HAIRLENGTHS,
-        HAIRSTYLES,
-        HAIRCOLORS
-    ]
-    commands.print(listOptions(features[i]));
     button.addEventListener('click', appearance);
     document.addEventListener('keydown', appearance);
-    function appearance(e) {
-        if (e.key == 'Enter' || e.type == 'click') {
-            character.appearance[features[i].category] = commands.choose(features[i]);
-            i++
-            if (i >= features.length) {
-                button.removeEventListener('click', appearance);
-                document.removeEventListener('keydown', appearance);
-                i = 0;
+    
+    // Begin character creation...
+    let curContext = context.shift();
+    choicesFor(curContext);
+    
+    function choicesFor(context) {
+        if (context == null || context == undefined) return
+        const choices = [];
 
-                return
+        if (context == 'race') {
+            for (let i = 0; i < Races.length; i++) {
+                choices.push(`${i + 1}. ${Races[i].title}`)
             }
-            commands.print(listOptions(features[i]));
+        } else {
+            for (let i = 0; i < client.character.dna[context].length; i++) {
+                choices.push(`${i + 1}. ${client.character.dna[curContext][i].gene}`)
+            }
+        }
+
+        commands.print(`Choose your ${context}:`);
+        commands.print(choices.join('<br>'));
+        commands.print();
+    }
+
+    function appearance(e) {
+
+        if (e.key == 'Enter' || e.type == 'click') {
+            switch (curContext) {
+                case 'race': {
+                    const choice = Number(input.value) - 1;
+                    const Race = Races[choice].race;
+                    
+                    client.character = new Race();
+                    curContext = context.shift();
+                    choicesFor(curContext);
+                    break;
+                }
+                case 'complexion': {
+                    const choice = Number(input.value) - 1;
+                    const complexion = client.character.dna['complexion'][choice];
+                    
+                    client.character.appearance['complexion'] = complexion.gene;
+                    curContext = context.shift();
+                    choicesFor(curContext);
+                    break;
+                }
+                case 'eye color': {
+                    const choice = Number(input.value) - 1;
+                    const eyeColor = client.character.dna['eye color'][choice];
+                    
+                    client.character.appearance['eye color'] = eyeColor.gene;
+                    curContext = context.shift();
+                    choicesFor(curContext);
+                    break;
+                }
+                case 'hair length': {
+                    const choice = Number(input.value) - 1;
+                    const hairLength = client.character.dna['hair length'][choice];
+                    
+                    client.character.appearance['hair length'] = hairLength.gene;
+                    curContext = context.shift();
+                    choicesFor(curContext);
+                    break;
+                }
+                case 'hair color': {
+                    const choice = Number(input.value) - 1;
+                    const hairColor = client.character.dna['hair color'][choice];
+                    
+                    client.character.appearance['hair color'] = hairColor.gene;
+                    curContext = context.shift();
+                    choicesFor(curContext);
+                    break;
+                }
+                case 'hair style': {
+                    const choice = Number(input.value) - 1;
+                    const hairStyle = client.character.dna['hair style'][choice];
+                    
+                    client.character.appearance['hair style'] = hairStyle.gene;
+                    curContext = context.shift();
+                    
+                    commands.print(client.character.description)
+                    button.removeEventListener('click', appearance);
+                    document.removeEventListener('keydown', appearance);
+                }
+            }
+
             commands.resetInput(input);
         }
     }
 }
 
 export {
-    listOptions,
     createCharacter
 }
