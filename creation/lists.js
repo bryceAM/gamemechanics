@@ -159,9 +159,90 @@ class Human extends Humanoid {
         ]);
     }
 }
+class Elf extends Humanoid {
+    constructor() {
+        super();
+        this.dna['race'] = [{gene: 'Elf'}];
+        this.dna['complexion'].push(...[
+            {gene: 'white'},
+            {gene: 'lily-white'},
+            {gene: 'pallid'},
+            {gene: 'ashen'},
+            {gene: 'pale'},
+            {gene: 'alabaster'},
+            {gene: 'ivory'},
+            {gene: 'flawless'},
+            {gene: 'luminous'},
+            {gene: 'rosy'},
+            {gene: 'bronzed'},
+            {gene: 'dusky'}
+        ]);
+        this.dna['eye color'].push(...[
+            {gene: 'violet'},
+            {gene: 'lavender'},
+            {gene: 'wine-red'},
+            {gene: 'purple'},
+            {gene: 'lilac'},
+            {gene: 'magenta'},
+            {gene: 'vineous'},
+            {gene: 'dark purple'},
+            {gene: 'hazel'},
+            {gene: 'brown'},
+            {gene: 'ale-brown'},
+            {gene: 'dark brown'},
+            {gene: 'golden'},
+            {gene: 'pale gold'},
+            {gene: 'silver'},
+            {gene: 'dusky-gray'},
+            {gene: 'milky-white'},
+            {gene: 'dusky-silver'},
+            {gene: 'forest green'},
+            {gene: 'dreamy-blue'},
+            {gene: 'sky-blue'},
+            {gene: 'dark blue'},
+            {gene: 'light blue'},
+            {gene: 'crystal blue'}
+        ]);
+        this.dna['hair style'].push(...[
+            {gene: 'silky'},
+            {gene: 'smooth'},
+            {gene: 'tumbling'},
+            {gene: 'cascading'},
+            {gene: 'tangled'},
+            {gene: 'glossy'},
+            {gene: 'lustrous'},
+            {gene: 'woven'},
+            {gene: 'plaited'},
+            {gene: 'braided'},
+            {gene: 'tied-back'},
+            {gene: 'straight'},
+            {gene: 'tousled'},
+            {gene: 'bobbed'}
+        ]);
+        this.dna['hair color'].push(...[
+            {gene: 'red'},
+            {gene: 'claret'},
+            {gene: 'fiery red'},
+            {gene: 'titian'},
+            {gene: 'scarlet'},
+            {gene: 'crimson'},
+            {gene: 'blonde'},
+            {gene: 'golden-blonde'},
+            {gene: 'golden'},
+            {gene: 'amber'},
+            {gene: 'flaxen'},
+            {gene: 'honey-blonde'},
+            {gene: 'strawberry-blonde'},
+            {gene: 'niveous'},
+            {gene: 'silver'},
+            {gene: 'platinum'}
+        ]);
+    }
+}
 
 const Races = [
-    {title: 'Human', race: Human}
+    {title: 'Human', race: Human},
+    {title: 'Elf', race: Elf}
 ]
 
 export {
